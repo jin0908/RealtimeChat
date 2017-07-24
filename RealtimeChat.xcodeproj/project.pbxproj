@@ -22,6 +22,7 @@
 		C07DE43B1F24363A003AAE97 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE43A1F24363A003AAE97 /* Extensions.swift */; };
 		C07DE43E1F244409003AAE97 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE43D1F244409003AAE97 /* ChatLogController.swift */; };
 		C07DE4401F244CCA003AAE97 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE43F1F244CCA003AAE97 /* Message.swift */; };
+		C0AB23811F25A6AA00266887 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB23801F25A6AA00266887 /* ChatMessageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		C07DE43A1F24363A003AAE97 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C07DE43D1F244409003AAE97 /* ChatLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
 		C07DE43F1F244CCA003AAE97 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		C0AB23801F25A6AA00266887 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				C07DE4361F240316003AAE97 /* UserCell.swift */,
+				C0AB23801F25A6AA00266887 /* ChatMessageCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				C07DE43B1F24363A003AAE97 /* Extensions.swift in Sources */,
 				C03052F41F23084100F18B1C /* LoginController.swift in Sources */,
 				C07DE4391F2405D1003AAE97 /* LoginController+handlers.swift in Sources */,
+				C0AB23811F25A6AA00266887 /* ChatMessageCell.swift in Sources */,
 				C07DE4401F244CCA003AAE97 /* Message.swift in Sources */,
 				C07DE4351F23FF92003AAE97 /* User.swift in Sources */,
 				C03052E21F23062C00F18B1C /* AppDelegate.swift in Sources */,

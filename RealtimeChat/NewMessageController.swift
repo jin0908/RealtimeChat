@@ -33,6 +33,8 @@ class NewMessageController: UITableViewController {
                 //user.setValuesForKeys(dictionary) // dangerous setter (crush possibilities if user props are nil or not match with firebase)
                 // initialzie user property with value like dictionary["name"] is a safe way
                 let user = User(dictionary: dictionary)
+                user.id = snapshot.key
+                
                 self.users.append(user)
                 print(self.users.count)
                 
@@ -66,6 +68,7 @@ class NewMessageController: UITableViewController {
       
         return cell
     }
+    
     
     
     

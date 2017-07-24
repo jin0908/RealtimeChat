@@ -87,8 +87,9 @@ extension LoginController: UINavigationControllerDelegate, UIImagePickerControll
                 return
             }
             //successfully logged in
+            print("successfully logged in existing User, Auth.auth().currentUser: ", Auth.auth().currentUser?.uid)
+
             self.dismiss(animated: true)
-            print("user logged in: ", Auth.auth().currentUser?.uid)
         }
         
         
@@ -104,16 +105,19 @@ extension LoginController: UINavigationControllerDelegate, UIImagePickerControll
                 return
             }
             //succesfully registered
+            print("successfully created User, Auth.auth().currentUser: ", Auth.auth().currentUser?.uid)
             guard let uid = Auth.auth().currentUser?.uid else { return }
             let uniqueID = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_images").child("\(uniqueID).jpg")
             guard let uploadData = UIImageJPEGRepresentation(self.profileImageView.image!, 0.1) else { return }
         
+            // put image data to stroage
             storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if let error = error {
                     print(error)
                     return
                 }
+                // after putting data to a stroage, get url and save values included with url to the db
                 guard let imageURL = metadata?.downloadURL()?.absoluteString else { return }
                 let values = ["name": nameText, "email": emailText, "imageURL": imageURL]
                 self.registerUserIntoDatabaseWithUID(uid: uid, values: values)
@@ -132,9 +136,6 @@ extension LoginController: UINavigationControllerDelegate, UIImagePickerControll
                 return
             }
             //succesfully saved data to data base
-            
-            
-            
             self.dismiss(animated: true)
         })
 
