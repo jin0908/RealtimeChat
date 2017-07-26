@@ -185,6 +185,7 @@
 				TargetAttributes = {
 					C03052DD1F23062C00F18B1C = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = XK9C6YAD3X;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -410,8 +411,10 @@
 			baseConfigurationReference = 40113EFB1F610CF795ACFA71 /* Pods-RealtimeChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XK9C6YAD3X;
 				INFOPLIST_FILE = RealtimeChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = Hyeongjin.Um.RealtimeChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -423,8 +426,10 @@
 			baseConfigurationReference = 90916DC940DFA2959021DF65 /* Pods-RealtimeChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = XK9C6YAD3X;
 				INFOPLIST_FILE = RealtimeChat/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = Hyeongjin.Um.RealtimeChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;

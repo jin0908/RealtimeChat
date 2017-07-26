@@ -24,28 +24,23 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var messages = [Message]()
     
     func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else { return }
         
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+        let userMessagesRef = Database.database().reference().child("user-messages").child(uid).child(toId)
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
             let messagesRef = Database.database().reference().child("messages").child(messageId)
             messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                print(snapshot)
-                
-                
                 guard let dictionary = snapshot.value as? [String: Any] else { return }
                 let message = Message(dictionary: dictionary)
                 
                 // filterering partner among the users
-                if message.chatPartnerId() == self.user?.id {
                     self.messages.append(message)
                     DispatchQueue.main.async {
                         self.collectionView?.reloadData()
                     }
-                }
             }, withCancel: nil)
         }, withCancel: nil)
     }
@@ -67,7 +62,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.alwaysBounceVertical = true
         setupInputComponents()
+        setupKeyboardObservers()
     
+    }
+    
+    //ep 15
+    func setupKeyboardObservers() {
+//        NSNotification().addob
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -80,20 +81,46 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let message = messages[indexPath.row]
         cell.textView.text = message.text
         
+        setupCell(cell, message: message)
+        
         //estimated width constraints
         if let text = message.text {
-            cell.bubbleWidthAchor?.constant = estimateFrameForText(text: text).width
+            cell.bubbleWidthAchor?.constant = estimateFrameForText(text: text).width + 30
         }
         
         return cell
+    }
+    
+    private func setupCell(_ cell: ChatMessageCell, message: Message) {
+        
+        if let profileImageURL = self.user?.profileImageURL {
+            cell.profileImageView.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
+        }
+        
+        
+        if message.fromID == Auth.auth().currentUser?.uid {
+            // outgoing blue
+            cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
+            cell.textView.textColor = .white
+            cell.bubbleViewRightAnchor?.isActive = true
+            cell.bubbleViewLeftAnchor?.isActive = false
+            cell.profileImageView.isHidden = true
+            
+        } else {
+            // incoming gray
+            cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
+            cell.textView.textColor = .black
+            cell.bubbleViewRightAnchor?.isActive = false
+            cell.bubbleViewLeftAnchor?.isActive = true
+            cell.profileImageView.isHidden = false
+        }
     }
     
     // for transition
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
-    
-    //
+
     private func estimateFrameForText(text: String) -> CGRect {
     
         let size = CGSize(width: 200, height: 1000)
@@ -106,12 +133,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         var height: CGFloat = 80
-        
-        
-        
+    
         // estimated height
         if let text = messages[indexPath.item].text {
-            height = estimateFrameForText(text: text).height + 32
+            height = estimateFrameForText(text: text).height + 20
         }
     
         return CGSize(width: view.frame.width, height: height)
@@ -119,7 +144,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     func setupInputComponents() {
         let containerView = UIView()
-//        containerView.backgroundColor = .red
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = .white
         
@@ -127,11 +151,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         sendButton.setTitle("Send", for: .normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        
-//        let inputTextField = UITextField()
-//        inputTextField.placeholder = "Enter message..."
-//        inputTextField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let separatorLineView = UIView()
         separatorLineView.backgroundColor = UIColor(r: 220, g: 220, b: 220)
         separatorLineView.translatesAutoresizingMaskIntoConstraints = false
@@ -166,8 +186,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func handleSend() {
         let ref = Database.database().reference().child("messages").childByAutoId()
         
-        // how to make user id?
-        
         guard let toId = user?.id else { return }
         guard let fromId = Auth.auth().currentUser?.uid else { return }
         let timestamp = Int(Date().timeIntervalSince1970)
@@ -181,12 +199,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             self.inputTextField.text = nil
             
-            let userMessagesRef = Database.database().reference().child("user-messages").child(fromId)
+            let userMessagesRef = Database.database().reference().child("user-messages").child(fromId).child(toId)
             
             let messageId = ref.key
             userMessagesRef.updateChildValues([messageId: 1])
             
-            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId)
+            let recipientUserMessageRef = Database.database().reference().child("user-messages").child(toId).child(fromId)
             recipientUserMessageRef.updateChildValues([messageId: 1])
         }
     }

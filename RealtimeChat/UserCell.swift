@@ -59,7 +59,7 @@ class UserCell: UITableViewCell {
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "upload_image_icon")
+        imageView.image = UIImage(named: "nedstark")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
@@ -68,6 +68,7 @@ class UserCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
+        label.text = "default text"
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor.darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
